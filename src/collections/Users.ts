@@ -9,5 +9,14 @@ export const Users: CollectionConfig = {
   fields: [
     // Email added by default
     // Add more fields as needed
+    {
+      name: 'test',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/app/components/TestComponent',
+        },
+      },
+    },
   ],
 }
