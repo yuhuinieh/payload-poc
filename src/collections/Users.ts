@@ -1,3 +1,5 @@
+import { isAdmin, isAdminFieldLevel } from '@/access/isAdmin'
+import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -21,8 +23,49 @@ export const Users: CollectionConfig = {
     // },
   },
   auth: true,
+  // 權限設定
+  // 設定誰可以對 User collection 做什麼事
+  access: {
+    create: isAdmin,
+    read: isAdminOrSelf,
+    update: isAdminOrSelf,
+    delete: isAdmin,
+  },
   fields: [
     // Email added by default
     // Add more fields as needed
+    {
+      type: 'row',
+      fields: [
+        { name: 'firstName', type: 'text' },
+        { name: 'lastName', type: 'text' },
+      ],
+    },
+
+    // 設定角色 roles
+    {
+      name: 'roles',
+      saveToJWT: true, // Save this field to JWT so we can use from `req.user`
+      type: 'select',
+      hasMany: true,
+      defaultValue: ['editor'],
+      options: [
+        // 管理員
+        { label: 'Admin', value: 'admin' },
+        // 編輯者
+        { label: 'Editor', value: 'editor' },
+        // 審核員
+        { label: 'Reviewer', value: 'reviewer' },
+        // 發布者
+        { label: 'Publisher', value: 'publisher' },
+      ],
+      // 欄位的權限設定
+      // 設定誰可以對這個 role field 做事
+      access: {
+        // Only admins can create or update a value for this field
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel,
+      },
+    },
   ],
 }

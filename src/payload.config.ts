@@ -21,6 +21,30 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Posts],
+  onInit: async (payload) => {
+    // 檢查是否已經有使用者
+    const existingUsers = await payload.find({
+      collection: 'users',
+      limit: 1, // 只需要檢查是否存在至少一個用戶
+    })
+
+    if (existingUsers.docs.length === 0) {
+      // 創建預設帳號
+      await payload.create({
+        collection: 'users',
+        data: {
+          email: 'admin@payload.com',
+          password: '1234',
+          firstName: 'Payload',
+          lastName: 'CMS',
+          roles: ['admin'], // 根據你的設計，賦予適當的角色
+        },
+      })
+      console.log('✅ 預設用戶已創建：admin@payload.com / 1234')
+    } else {
+      console.log('✅ 已有用戶，未創建新帳號')
+    }
+  },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
