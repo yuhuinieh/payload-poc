@@ -13,7 +13,7 @@ export const Users: CollectionConfig = {
     // 資料列表頁(Collection's List View)的說明
     description: '這是一段描述說明怎麼新增使用者。',
     // 不知為什麼沒有效果ＱＱ
-    defaultColumns: ['test', 'id'],
+    // defaultColumns: ['test', 'id'],
     // components: {
     //   views: {
     //     list: {
@@ -65,6 +65,23 @@ export const Users: CollectionConfig = {
         // Only admins can create or update a value for this field
         create: isAdminFieldLevel,
         update: isAdminFieldLevel,
+      },
+    },
+    {
+      name: 'faqs',
+      // Save this field to JWT so we can use from `req.user`
+      saveToJWT: true,
+      type: 'relationship',
+      relationTo: 'faqs',
+      hasMany: true,
+      access: {
+        // Only admins can create or update a value for this field
+        create: isAdminFieldLevel,
+        update: isAdminFieldLevel,
+      },
+      admin: {
+        condition: ({ roles }) => roles && !roles.includes('admin'),
+        description: 'This field sets which faq that this user has access to.',
       },
     },
   ],
