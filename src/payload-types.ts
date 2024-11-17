@@ -13,6 +13,7 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    posts: Post;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -21,6 +22,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -95,6 +97,80 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: string;
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  isPublished: boolean;
+  publishedAt?: string | null;
+  contactEmail?: string | null;
+  userGroup?: {
+    name?: string | null;
+    members?:
+      | {
+          email?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  likes?: number | null;
+  type: 'blog' | 'news';
+  author: string | User;
+  richContent?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  category: 'tech' | 'lifestyle' | 'health';
+  title: string;
+  content: string;
+  image?: (string | null) | Media;
+  translations?:
+    | {
+        language?: ('en' | 'zh') | null;
+        translatedTitle?: string | null;
+        translatedContent?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  tabTitle: string;
+  body: string;
+  tabAuthor?: string | null;
+  tabTags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  keywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -107,6 +183,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: string | Post;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -155,7 +235,6 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  測試一個元件?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -183,6 +262,67 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  isPublished?: T;
+  publishedAt?: T;
+  contactEmail?: T;
+  userGroup?:
+    | T
+    | {
+        name?: T;
+        members?:
+          | T
+          | {
+              email?: T;
+              id?: T;
+            };
+      };
+  likes?: T;
+  type?: T;
+  author?: T;
+  richContent?: T;
+  category?: T;
+  title?: T;
+  content?: T;
+  image?: T;
+  translations?:
+    | T
+    | {
+        language?: T;
+        translatedTitle?: T;
+        translatedContent?: T;
+        id?: T;
+      };
+  tabTitle?: T;
+  body?: T;
+  tabAuthor?: T;
+  tabTags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  metaTitle?: T;
+  metaDescription?: T;
+  keywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
