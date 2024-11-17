@@ -155,7 +155,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  test?: T;
+  測試一個元件?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

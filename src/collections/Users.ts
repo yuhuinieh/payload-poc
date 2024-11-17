@@ -4,7 +4,7 @@ export const Users: CollectionConfig = {
   slug: 'users',
   // 設定 admin 頁面的呈現
   admin: {
-    // 選擇哪一個資料欄位，作為顯示在編輯頁的標題
+    // 選擇哪一個資料欄位 fields，作為顯示在編輯頁的標題
     useAsTitle: 'email',
     // 在 dashabord 與 nav 上顯示群組標題
     group: '群組名稱',
