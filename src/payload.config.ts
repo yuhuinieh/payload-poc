@@ -10,6 +10,7 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import Posts from './collections/Posts'
 import { Faqs } from './collections/Faqs'
+import { Articles } from './collections/Artcles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -21,7 +22,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Posts, Faqs],
+  collections: [Users, Media, Posts, Faqs, Articles],
   // onInit: async (payload) => {
   //   // 檢查是否已經有使用者
   //   const existingUsers = await payload.find({

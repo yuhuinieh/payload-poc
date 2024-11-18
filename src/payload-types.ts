@@ -15,6 +15,7 @@ export interface Config {
     media: Media;
     posts: Post;
     faqs: Faq;
+    articles: Article;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -25,6 +26,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     faqs: FaqsSelect<false> | FaqsSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -188,6 +190,36 @@ export interface Post {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: string;
+  title: string;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  status?: ('draft' | 'reviewing' | 'published') | null;
+  publishedAt?: string | null;
+  reviewerNotes?: string | null;
+  author: string | User;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -208,6 +240,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'faqs';
         value: string | Faq;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: string | Article;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -358,6 +394,21 @@ export interface FaqsSelect<T extends boolean = true> {
   answer?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  status?: T;
+  publishedAt?: T;
+  reviewerNotes?: T;
+  author?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
